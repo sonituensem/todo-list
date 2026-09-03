@@ -1,0 +1,86 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}
+    {% if object %}
+        Update task
+    {% else %}
+        Add task
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 col-lg-6">
+
+        <h1 class="mb-4">
+            {% if object %}
+                Update task
+            {% else %}
+                Add task
+            {% endif %}
+        </h1>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {{ form.non_field_errors }}
+
+            <div class="mb-3">
+                {{ form.content.label_tag }}
+                {{ form.content }}
+
+                {% for error in form.content.errors %}
+                    <div class="text-danger">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.deadline.label_tag }}
+                {{ form.deadline }}
+
+                {% for error in form.deadline.errors %}
+                    <div class="text-danger">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="form-check mb-3">
+                {{ form.is_done }}
+                {{ form.is_done.label_tag }}
+
+                {% for error in form.is_done.errors %}
+                    <div class="text-danger">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.tags.label_tag }}
+                {{ form.tags }}
+
+                {% for error in form.tags.errors %}
+                    <div class="text-danger">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Save
+            </button>
+
+            <a
+                href="{% url 'tasks:task-list' %}"
+                class="btn btn-secondary"
+            >
+                Cancel
+            </a>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
