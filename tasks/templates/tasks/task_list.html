@@ -3,72 +3,82 @@
 {% block title %}Tasks{% endblock %}
 
 {% block content %}
+
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Tasks</h1>
 
-    <a
-        href="{% url 'tasks:task-create' %}"
-        class="btn btn-primary"
-    >
-        Add task
-    </a>
+```
+<a
+    href="{% url 'tasks:task-create' %}"
+    class="btn btn-primary"
+>
+    Add task
+</a>
+```
+
 </div>
 
-{% if tasks %}
-    <div class="row">
-        {% for task in tasks %}
-            <div class="col-12 mb-3">
-                <div class="card">
-                    <div class="card-body">
+{% if tasks %} <div class="row">
+{% for task in tasks %} <div class="col-12 mb-3"> <div class="card"> <div class="card-body">
 
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">
-                                {{ task.content }}
-                            </h5>
+```
+                    <div
+                        class="d-flex justify-content-between align-items-center"
+                    >
+                        <h5 class="card-title mb-0">
+                            {{ task.content }}
+                        </h5>
 
-                            {% if task.is_done %}
-                                <span class="badge bg-success">
-                                    Done
-                                </span>
-                            {% else %}
-                                <span class="badge bg-warning text-dark">
-                                    Not done
-                                </span>
-                            {% endif %}
-                        </div>
+                        {% if task.is_done %}
+                            <span class="badge bg-success">
+                                Done
+                            </span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">
+                                Not done
+                            </span>
+                        {% endif %}
+                    </div>
 
-                        <hr>
+                    <hr>
 
-                        <p class="card-text mb-2">
-                            <strong>Created:</strong>
-                            {{ task.created_at }}
-                        </p>
+                    <p class="card-text mb-2">
+                        <strong>Created:</strong>
+                        {{ task.created_at }}
+                    </p>
 
-                        <p class="card-text mb-2">
-                            <strong>Deadline:</strong>
+                    <p class="card-text mb-2">
+                        <strong>Deadline:</strong>
 
-                            {% if task.deadline %}
-                                {{ task.deadline }}
-                            {% else %}
-                                No deadline
-                            {% endif %}
-                        </p>
+                        {% if task.deadline %}
+                            {{ task.deadline }}
+                        {% else %}
+                            No deadline
+                        {% endif %}
+                    </p>
 
-                        <p class="card-text mb-3">
-                            <strong>Tags:</strong>
+                    <p class="card-text mb-3">
+                        <strong>Tags:</strong>
 
-                            {% for tag in task.tags.all %}
-                                <span class="badge bg-secondary">
-                                    {{ tag.name }}
-                                </span>
-                            {% empty %}
-                                No tags
-                            {% endfor %}
-                        </p>
+                        {% for tag in task.tags.all %}
+                            <span class="badge bg-secondary">
+                                {{ tag.name }}
+                            </span>
+                        {% empty %}
+                            No tags
+                        {% endfor %}
+                    </p>
 
-                        <div class="d-flex gap-2">
-                            <a
-                                href="{% url 'tasks:task-toggle' task.pk %}"
+                    <div class="d-flex gap-2">
+                        <form
+                            method="post"
+                            action="{% url 'tasks:task-toggle' task.pk %}"
+                            class="d-inline"
+                        >
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
                                 class="btn btn-sm btn-outline-success"
                             >
                                 {% if task.is_done %}
@@ -76,31 +86,32 @@
                                 {% else %}
                                     Complete
                                 {% endif %}
-                            </a>
+                            </button>
+                        </form>
 
-                            <a
-                                href="{% url 'tasks:task-update' task.pk %}"
-                                class="btn btn-sm btn-outline-primary"
-                            >
-                                Update
-                            </a>
+                        <a
+                            href="{% url 'tasks:task-update' task.pk %}"
+                            class="btn btn-sm btn-outline-primary"
+                        >
+                            Update
+                        </a>
 
-                            <a
-                                href="{% url 'tasks:task-delete' task.pk %}"
-                                class="btn btn-sm btn-outline-danger"
-                            >
-                                Delete
-                            </a>
-                        </div>
-
+                        <a
+                            href="{% url 'tasks:task-delete' task.pk %}"
+                            class="btn btn-sm btn-outline-danger"
+                        >
+                            Delete
+                        </a>
                     </div>
+
                 </div>
             </div>
-        {% endfor %}
-    </div>
-{% else %}
-    <div class="alert alert-info">
-        No tasks yet.
-    </div>
+        </div>
+    {% endfor %}
+</div>
+```
+
+{% else %} <div class="alert alert-info">
+No tasks yet. </div>
 {% endif %}
 {% endblock %}
