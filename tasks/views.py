@@ -1,10 +1,11 @@
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
+from django.views.decorators.http import require_POST
 
 from .forms import TagForm, TaskForm
 from .models import Tag, Task
-from django.views.decorators.http import require_POST
+
 
 class TaskListView(generic.ListView):
     model = Task
@@ -31,14 +32,8 @@ class TaskDeleteView(generic.DeleteView):
     template_name = "tasks/task_confirm_delete.html"
     success_url = reverse_lazy("tasks:task-list")
 
+
 @require_POST
-def task_toggle(request, pk):
-    task = get_object_or_404(Task, pk=pk)
-    task.is_done = not task.is_done
-    task.save(update_fields=["is_done"])
-
-    return redirect("tasks:task-list")
-
 def task_toggle(request, pk):
     task = get_object_or_404(Task, pk=pk)
     task.is_done = not task.is_done
