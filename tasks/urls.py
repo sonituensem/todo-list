@@ -1,13 +1,21 @@
 from django.urls import path
 
-from . import views
+from tasks import views
 
 
 app_name = "tasks"
 
 urlpatterns = [
-    path("", views.TaskListView.as_view(), name="task-list"),
-    path("tasks/create/", views.TaskCreateView.as_view(), name="task-create"),
+    path(
+        "",
+        views.TaskListView.as_view(),
+        name="task-list",
+    ),
+    path(
+        "tasks/create/",
+        views.TaskCreateView.as_view(),
+        name="task-create",
+    ),
     path(
         "tasks/<int:pk>/update/",
         views.TaskUpdateView.as_view(),
@@ -20,10 +28,14 @@ urlpatterns = [
     ),
     path(
         "tasks/<int:pk>/toggle/",
-        views.task_toggle,
+        views.TaskToggleView.as_view(),
         name="task-toggle",
     ),
-    path("tags/", views.TagListView.as_view(), name="tag-list"),
+    path(
+        "tags/",
+        views.TagListView.as_view(),
+        name="tag-list",
+    ),
     path(
         "tags/create/",
         views.TagCreateView.as_view(),
